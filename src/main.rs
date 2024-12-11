@@ -69,5 +69,5 @@ fn read_txt() -> io::Result<()> {
 }
 
 fn main() {
-    day2::main::main();
+    day3::main::main();
 }
