@@ -4,6 +4,7 @@ use std::collections::HashMap;
 
 mod day2;
 mod day3;
+mod day4;
 
 
 fn read_txt() -> io::Result<()> {
@@ -69,5 +70,5 @@ fn read_txt() -> io::Result<()> {
 }
 
 fn main() {
-    day3::main::main();
+    day4::main::main();
 }
