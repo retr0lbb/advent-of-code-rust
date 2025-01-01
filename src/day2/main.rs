@@ -6,46 +6,48 @@ fn read_line_and_determin_if_it_is_ok_or_not(line: String) -> bool {
     let mut isDeacreasing: Option<bool> = None;
     let mut isUnsafe = false;
 
-    let numbers: Vec<i32> = line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+    let numbers: Vec<i32> = line
+        .split_whitespace()
+        .map(|s| s.parse().unwrap())
+        .collect();
 
     println!("lista de numeros: {:?}", numbers);
-    for i in 0..numbers.len()-1{
-        if numbers[i] < numbers[i+1] {
+    for i in 0..numbers.len() - 1 {
+        if numbers[i] < numbers[i + 1] {
             if isDeacreasing == None {
                 isDeacreasing = Some(false);
             }
 
             if isDeacreasing == Some(true) {
                 isUnsafe = true;
-                
-                return  isUnsafe;
-            }
 
-            if numbers[i+1] - numbers[i] > max_fall_value {
-                isUnsafe = true;
-               
                 return isUnsafe;
             }
-        }else if numbers[i] > numbers[i+1] {
+
+            if numbers[i + 1] - numbers[i] > max_fall_value {
+                isUnsafe = true;
+
+                return isUnsafe;
+            }
+        } else if numbers[i] > numbers[i + 1] {
             if isDeacreasing == None {
                 isDeacreasing = Some(true);
             }
 
             if isDeacreasing == Some(false) {
                 isUnsafe = true;
-               
-                return  isUnsafe;
-            }
 
-            if numbers[i] - numbers[i+1] > max_fall_value {
-                isUnsafe = true;
-               
                 return isUnsafe;
             }
 
-        }else if numbers[i] == numbers[i+1] {
+            if numbers[i] - numbers[i + 1] > max_fall_value {
+                isUnsafe = true;
+
+                return isUnsafe;
+            }
+        } else if numbers[i] == numbers[i + 1] {
             isUnsafe = true;
-            
+
             return isUnsafe;
         }
     }
@@ -64,17 +66,26 @@ fn is_safe_with_dampener(line: String) -> bool {
     }
 
     // Se não for seguro, tente remover cada elemento
-    let numbers: Vec<i32> = line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+    let numbers: Vec<i32> = line
+        .split_whitespace()
+        .map(|s| s.parse().unwrap())
+        .collect();
 
     for i in 0..numbers.len() {
         // Remove o número no índice `i`
-        let filtered: Vec<i32> = numbers.iter().enumerate()
+        let filtered: Vec<i32> = numbers
+            .iter()
+            .enumerate()
             .filter(|&(index, _)| index != i)
             .map(|(_, &num)| num)
             .collect();
 
         // Testa a sequência resultante
-        let filtered_line = filtered.iter().map(|n| n.to_string()).collect::<Vec<String>>().join(" ");
+        let filtered_line = filtered
+            .iter()
+            .map(|n| n.to_string())
+            .collect::<Vec<String>>()
+            .join(" ");
         if !read_line_and_determin_if_it_is_ok_or_not(filtered_line) {
             return false; // Seguro com remoção
         }
@@ -83,16 +94,16 @@ fn is_safe_with_dampener(line: String) -> bool {
     true // Inseguro
 }
 
-
-
-fn read_input<F>(mut cb: F) -> io::Result<()> where F: FnMut(String) -> bool {
+fn read_input<F>(mut cb: F) -> io::Result<()>
+where
+    F: FnMut(String) -> bool,
+{
     let path = "src/day2/input.txt";
     let mut sumOfSafe = 0;
 
     let file = fs::File::open(path)?;
 
     let reader = io::BufReader::new(file);
-
 
     for line in reader.lines() {
         let result = cb(line?);
@@ -103,13 +114,9 @@ fn read_input<F>(mut cb: F) -> io::Result<()> where F: FnMut(String) -> bool {
 
     print!("{}", sumOfSafe);
 
-
     Ok(())
 }
 
-
 pub fn main() {
-
     let _ = read_input(is_safe_with_dampener);
-
 }
