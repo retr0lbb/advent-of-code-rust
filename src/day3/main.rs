@@ -4,7 +4,7 @@ use std::io::{self, BufRead};
 
 
 fn get_mult_in_string(search_string: String) -> Vec<String>{
-    let regex_string = "(mul[(][0-9]{1,3},[0-9]{1,3}[)])|(don't[(][)])|(do[(][)])";
+    let regex_string: &str = "(mul[(][0-9]{1,3},[0-9]{1,3}[)])|(don't[(][)])|(do[(][)])";
 
     let remedy = Regex::new(&regex_string).unwrap();
  
@@ -18,7 +18,7 @@ fn get_mult_in_string(search_string: String) -> Vec<String>{
 }
 
 fn get_mul_string_turninto_number(memes_string: &str)-> Vec<i32> {
-    let regex_string = "[0-9]{1,3}";
+    let regex_string: &str = "[0-9]{1,3}";
     
     let regex = Regex::new(&regex_string).unwrap();
 

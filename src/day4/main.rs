@@ -1,44 +1,53 @@
 use std::fs;
 
-fn find_x_mas(grid: &[Vec<char>], rows: usize, cols: usize) -> usize {
-    let mut count = 0;
 
-    for row in 1..(rows - 1) {
-        for col in 1..(cols - 1) {
-            if is_x_mas(grid, row, col) {
-                count += 1;
+
+fn find_desired_pattern(grid: Vec<Vec<char>>) -> i32{
+    let rows = grid.len();
+    let cols = grid[0].len();
+    let mut validPatterns: i32 = 0;
+
+    for row in 0..rows{
+        for column in 0..cols{
+            if grid[row][column] == 'A'{
+                if row > 1 && row < rows-1 && column > 1 && column < cols -1{
+
+                    let char1_diag1 = grid[row+1][column-1];
+                    let char2_diag1 = grid[row-1][column+1];  
+
+                    let char1_diag2 = grid[row+1][column+1];
+                    let char2_diag2 = grid[row-1][column-1];
+
+                    let accepted_pattern_listen = ["MAS", "SAM"];
+
+                    let diag_1 = String::from_iter([char1_diag1, 'A' , char2_diag1]);
+                    let diag_2 = String::from_iter([char1_diag2, 'A', char2_diag2]);
+
+                    if(diag_1 == accepted_pattern_listen[0] || diag_1 == accepted_pattern_listen[1]) && (diag_2 == accepted_pattern_listen[0]|| diag_2 == accepted_pattern_listen[1]){
+                        validPatterns += 1
+                    }
+                }
             }
         }
     }
 
-    count
+
+    return validPatterns;
+
+
 }
 
-fn is_x_mas(grid: &[Vec<char>], row: usize, col: usize) -> bool {
-    // Define positions for the X-MAS structure
-    let top_left = grid.get(row.wrapping_sub(1)).and_then(|r| r.get(col.wrapping_sub(1)));
-    let top_right = grid.get(row.wrapping_sub(1)).and_then(|r| r.get(col + 1));
-    let center = grid.get(row).and_then(|r| r.get(col));
-    let bottom_left = grid.get(row + 1).and_then(|r| r.get(col.wrapping_sub(1)));
-    let bottom_right = grid.get(row + 1).and_then(|r| r.get(col + 1));
-
-    // Check if all positions form an X-MAS pattern
-    let top_valid = matches!((top_left, top_right), (Some('M'), Some('S')) | (Some('S'), Some('M')));
-    let bottom_valid = matches!((bottom_left, bottom_right), (Some('M'), Some('S')) | (Some('S'), Some('M')));
-
-    top_valid && bottom_valid && center == Some(&'A')
-}
 
 pub fn main() {
     // Read the input grid
     let input = fs::read_to_string("./src/day4/input.txt").expect("Failed to read the input file");
     let grid: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
 
-    let rows = grid.len();
-    let cols = grid[0].len();
+    let result = find_desired_pattern(grid);
+
+    println!("result: {}", result);
 
     // Count all X-MAS patterns
-    let count = find_x_mas(&grid, rows, cols);
 
-    println!("X-MAS appears {} times.", count);
+
 }
