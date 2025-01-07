@@ -6,6 +6,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 
 fn read_txt() -> io::Result<()> {
     let path = "src/day1.txt";
@@ -68,5 +69,5 @@ fn read_txt() -> io::Result<()> {
 }
 
 fn main() {
-    day5::main::main();
+    day6::main::main();
 }
